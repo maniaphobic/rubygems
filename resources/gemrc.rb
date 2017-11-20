@@ -28,6 +28,7 @@ resource_name :gemrc
 property :path, String, name_property: true, coerce: proc { |path| coerce_path(path) }
 property :user, String
 property :group, String
+property :mode, String, default: '0644'
 property :values, Hash
 
 load_current_value do
@@ -52,6 +53,7 @@ action :create do
   file path do
     user new_resource.user if new_resource.property_is_set?('user')
     group new_resource.group if new_resource.property_is_set?('group')
+    mode new_resource.mode if new_resource.property_is_set?('mode')
     content YAML.dump(desired_values)
   end
 end
